@@ -13,10 +13,13 @@ export const apiSlice = createApi({
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.accessToken
 
+            // console.log('token',token);
+            const jwt = localStorage.getItem('jwt');
+            //console.log('jwt',jwt);
             // If we have a token set in state, let's assume that we should be passing it.
-            if (token) {
-                console.log('setting token to baseapi');
-                headers.set('authorization', `Bearer ${token}`);
+            if (jwt) {
+                // console.log('setting token to baseapi');
+                headers.set('authorization', `Bearer ${jwt}`);
             }
 
             return headers

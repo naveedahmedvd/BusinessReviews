@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { apiSlice } from "../../Store/apiSlice";
-import {setToken} from '../../Store/AuthSlice';
+import { setToken } from '../../Store/AuthSlice';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -79,6 +79,7 @@ export default function SignUp(props) {
             //save token
             console.log(response.data.access_token);
             dispatch(setToken(response.data.access_token))
+            localStorage.setItem('jwt', response.data.access_token)
           })
           .catch(error => {
             console.log('unable to login', error);

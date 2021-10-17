@@ -5,14 +5,6 @@ import { apiSlice, useGetSetupStatusQuery } from '../../Store/apiSlice'
 import { useSelector } from "react-redux";
 import AuthApi from '../../APIs/AuthApi';
 export default function Home(props) {
-    // applicationApi.getApplications()
-    //     .then(applications => {
-    //         if (!applications.length)
-    //             this.props.history.push('/Setup');
-    //     });
-    // const [applicationName, setApplicationName] = useState('');
-
-    // AuthApi.getToken();
     const {
         data,
         isLoading,
@@ -23,7 +15,6 @@ export default function Home(props) {
     const application = useSelector((state) => {
         return state.application.application
     })
-    console.log(application?.Name);
     let appName = '';
     if (!isLoading) {
         if (isSuccess) {

@@ -68,17 +68,18 @@ export default function Login(props) {
     var response = getToken({ Username: user.Email, Password: user.Password })
       .then(response => {
         //save token
-        console.log(response.data.access_token);
+        //console.log(response.data.access_token);
         dispatch(setToken(response.data.access_token))
+        localStorage.setItem('jwt', response.data.access_token)
         props.history.push('/');
       })
       .catch(error => {
         console.log('unable to login', error);
       })
-    
+
   }
 
-  
+
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
   }
@@ -126,7 +127,7 @@ export default function Login(props) {
                 onChange={onChangePassword}
               />
             </Grid>
-            
+
           </Grid>
           <Button
             type="submit"
@@ -137,7 +138,7 @@ export default function Login(props) {
           >
             Login
           </Button>
-          
+
         </form>
       </div>
       <Box mt={5}>
