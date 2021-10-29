@@ -102,3 +102,17 @@ dist
 
 # TernJS port file
 .tern-port
+*.dll
+*.pdb
+BackendCMS/BackendCMS.API/bin/
+BackendCMS/BackendCMS.API/obj/
+BackendCMS/BackendCMS.BLL/bin/
+BackendCMS/BackendCMS.BLL/obj/
+BackendCMS/BackendCMS.DAL/bin/
+BackendCMS/BackendCMS.DAL/obj/
+BackendCMS/BackendCMS.Models/bin/
+BackendCMS/BackendCMS.Models/obj/
+BackendCMS/.vs/
+BackendCMS/IdentityServer/bin/
+BackendCMS/IdentityServer/obj/
+front-end-react/package-lock.json
