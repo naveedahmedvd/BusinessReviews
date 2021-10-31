@@ -1,0 +1,15 @@
+.search-bar-google {
+    width  : 100% !important;
+    display: inline-flex !important;
+}
+
+.locationField {
+    /* width  : 50% !important; */
+    display: inline-flex !important;
+    /* width: 500px!important; */
+    position: relative;
+    top: 50%;
+}
+.locationField-container {
+    height: 500px;
+}
