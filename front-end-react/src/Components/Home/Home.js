@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "../Navigation/Navbar";
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+
 import applicationApi from '../../APIs/ApplicationApi';
 import { apiSlice, useGetSetupStatusQuery } from '../../Store/apiSlice'
 import { useSelector } from "react-redux";
@@ -7,6 +10,8 @@ import { useSelector } from "react-redux";
 // import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 // import PlacesWithStandaloneSearchBox from './SearchBox'
 import { Loader } from "@googlemaps/js-api-loader"
+import TextInput from 'react-autocomplete-input';
+import 'react-autocomplete-input/dist/bundle.css';
 
 const loader = new Loader({
     apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -22,18 +27,7 @@ let autocomplete;
 let placesService;
 let selectedCityLocation;
 const axios = require('axios');
-const handleChange = (e) => {
-    console.log('handle change called', e.target.value);
-    const textSearchRequest = {
-        query: e.target.value,
-        type: 'restaurant',
-        location: selectedCityLocation,
-    }
-    console.log(selectedCityLocation);
-    placesService.textSearch(textSearchRequest, (list) => {
-        console.log(list);
-    });
-}
+
 export default function Home(props) {
     const {
         data,
@@ -42,7 +36,21 @@ export default function Home(props) {
         isError,
         error
     } = useGetSetupStatusQuery();
-    const [value, setValue] = useState(null);
+    const [autocompleteList, setAutocompleteList] = useState([]);
+    const handleChange = (e) => {
+        console.log('handle change called', e.target.value);
+        const textSearchRequest = {
+            query: e.target.value,
+            type: 'restaurant',
+            location: selectedCityLocation,
+        }
+        console.log(selectedCityLocation);
+        placesService.textSearch(textSearchRequest, (list) => {
+            const names = list.map(x => x.name);
+            console.log(names);
+            setAutocompleteList(names);
+        });
+    }
     const application = useSelector((state) => {
         return state.application.application
     })
@@ -62,7 +70,7 @@ export default function Home(props) {
         );
         autocomplete.addListener("place_changed", () => {
             const selectedCity = autocomplete.getPlace();
-            console.log(selectedCity.geometry.location);
+            console.log(selectedCity);
             selectedCityLocation = new window.google.maps.LatLng(selectedCity.geometry.location.lat(), selectedCity.geometry.location.lng());
         });
         placesService = new window.google.maps.places.PlacesService(div);
@@ -89,15 +97,6 @@ export default function Home(props) {
             }
         }
     }
-    if (value) {
-        console.log(value);
-        const placeId = value.value.place_id;
-
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`);
-        xhr.send();
-    }
 
 
     return (
@@ -105,7 +104,14 @@ export default function Home(props) {
             <Navbar Title={appName} />
             <div id='map'></div>
             <div id="locationField">
-                <input id="restaurantSearch" onChange={handleChange} placeholder="Search restaurants" type="text" /><input id="autocomplete" placeholder="Enter a city" type="text" />
+                <Autocomplete
+                    id="restaurantSearch"
+                    freeSolo
+                    fullWidth={false}
+                    options={autocompleteList}
+                    renderInput={(params) => <TextField onChange={handleChange} {...params} label="Search restaurants" />}
+                />
+                <input id="autocomplete" class="css-nxo287-MuiInputBase-input-MuiOutlinedInput-input" placeholder="Enter a city" type="text" />
             </div>
 
         </div>
