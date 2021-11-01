@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import FadeMenu from './FadeMenu';
+import { Link } from '@mui/material';
 
 // Using Inline Styling
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // Exporting Default Navbar to the App.js File
-export default function Navbar({Title}) {
+export default function Navbar({ Title }) {
     const classes = useStyles();
 
     return (
@@ -33,6 +33,9 @@ export default function Navbar({Title}) {
                     </IconButton>
                     <Typography variant="h6" color="inherit">
                         {Title}
+                    </Typography>
+                    <Typography variant="h6" color="inherit">
+                        <Link href="/Admin">Admin</Link>
                     </Typography>
                     {/* <FadeMenu/> */}
                 </Toolbar>

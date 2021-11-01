@@ -17,6 +17,7 @@ import {
 import SignUp from './Components/Setup/signup';
 import Setup from './Components/Setup/setup';
 import Login from './Components/Auth/login';
+import AdminHome from './Components/Admin/AdminHome';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -37,6 +38,8 @@ function App() {
             <Route path="/login" component={Login}>
             </Route>
             <Route path="/setup" component={Setup}>
+            </Route>
+            <Route path="/Admin" component={AdminHome}>
             </Route>
             <Route path="/" component={Home}>
             </Route>

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Loader } from "@googlemaps/js-api-loader"
 import 'react-autocomplete-input/dist/bundle.css';
+import { setSelectedPlaceFromAutocomplete } from "../../Store/RestaurantsSlice";
 import './home.css';
 const loader = new Loader({
     apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -15,20 +17,38 @@ let selectedCityLocation;
 
 
 export default function SearchBar(props) {
+    const dispatch = useDispatch();
+
     const [autocompleteList, setAutocompleteList] = useState([]);
     const handleChange = (e) => {
-        console.log('handle change called', e.target.value);
         const textSearchRequest = {
             query: e.target.value,
             type: 'restaurant',
             location: selectedCityLocation,
         }
-        console.log(selectedCityLocation);
         placesService.textSearch(textSearchRequest, (list) => {
-            const names = list.map(x => x.name);
-            var unique = names.filter((v, i, a) => a.indexOf(v) === i);
-            console.log(unique);
-            setAutocompleteList(unique);
+            setAutocompleteList(list);
+        });
+    }
+    const selectedFromRestaurants = (event, value) => {
+        if (!value)
+            return;
+        const placeDetailsRequest = {
+            placeId: value.place_id,
+        }
+        placesService.getDetails(placeDetailsRequest, (placeDetails) => {
+            console.log(placeDetails);
+            const restaurantName = placeDetails.name;
+            const reducer = (previousValue, currentValue) => previousValue + ' ' + currentValue;
+            const address = placeDetails.address_components.reduce(reducer, '');
+            var photos = placeDetails.photos.map(x => x.getUrl());
+            const details = {
+                restaurantName,
+                address,
+                photos
+            }
+            console.log(details);
+            dispatch(setSelectedPlaceFromAutocomplete(details));
         });
     }
     loader.load().then(() => {
@@ -64,9 +84,10 @@ export default function SearchBar(props) {
                     <Autocomplete
                         id="restaurantSearch"
                         className="search-bar-google"
-
+                        onChange={selectedFromRestaurants}
                         fullWidth={true}
                         options={autocompleteList}
+                        getOptionLabel={option => `${option.name} ${option.formatted_address}`}
                         renderInput={(params) => <TextField onChange={handleChange} {...params} label="Search restaurants" />}
                     />
                 </div>
