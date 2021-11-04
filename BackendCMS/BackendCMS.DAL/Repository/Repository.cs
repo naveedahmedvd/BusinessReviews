@@ -16,7 +16,7 @@ namespace BackendCMS.DAL.Repository
             this._context = context;
             table = _context.Set<T>();
         }
-        
+
         public IEnumerable<T> GetAll()
         {
             return table.ToList();
@@ -29,9 +29,10 @@ namespace BackendCMS.DAL.Repository
         {
             return table.Find(id);
         }
-        public void Insert(T obj)
+        public T Insert(T obj)
         {
-            table.Add(obj);
+            return table.Add(obj).Entity;
+
         }
         public void Update(T obj)
         {

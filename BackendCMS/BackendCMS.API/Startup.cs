@@ -69,6 +69,7 @@ namespace BackendCMS.API
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<ApplicationService>();
             services.AddTransient<AccountService>();
+            services.AddTransient<RestaurantService>();
             services.AddControllers();
             
             services.AddSwaggerGen(c =>

@@ -1,5 +1,6 @@
 ﻿using BackendCMS.DAL.Models;
 using BackendCMS.Models.AuthModels;
+using BackendCMS.Models.Models.Restaurant;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,38 @@ namespace BackendCMS.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Application>().ToTable("Application");
+            modelBuilder.Entity<Restaurant>(entity =>
+            {
+                entity.HasKey(e => e.RestaurantId);
+                entity.HasOne(r => r.Timings)
+                    .WithOne(t => t.Restaurant)
+                    .HasForeignKey<Restaurant>(r => r.TimingsId);
+                
+            });
+            modelBuilder.Entity<Review>(entity =>
+            {
+                entity.HasKey(e => e.ReviewId);
+
+                entity.HasOne(r => r.Restaurant)
+                    .WithMany(t => t.Reviews)
+                    .HasForeignKey(r => r.RestaurantId);
+
+            });
+
+            modelBuilder.Entity<Photo>(entity =>
+            {
+                entity.HasKey(e => e.PhotoId);
+
+                entity.HasOne(r => r.Restaurant)
+                    .WithMany(t => t.Photos)
+                    .HasForeignKey(r => r.RestaurantId);
+
+            });
+
+            modelBuilder.Entity<Timings>(entity =>
+            {
+                entity.HasKey(e => e.TimingsId);
+            });
 
             modelBuilder.Entity<ApiResourceClaims>(entity =>
             {
@@ -508,6 +541,10 @@ namespace BackendCMS.DAL
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
         public DbSet<Application> Applications { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Timings> Timings { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public virtual DbSet<ApiResourceClaims> ApiResourceClaims { get; set; }
         public virtual DbSet<ApiResourceProperties> ApiResourceProperties { get; set; }
         public virtual DbSet<ApiResourceScopes> ApiResourceScopes { get; set; }

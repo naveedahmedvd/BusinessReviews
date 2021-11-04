@@ -63,8 +63,28 @@ export const apiSlice = createApi({
                 }
             },
         }),
+        addRestaurant: builder.mutation({
+            query(body) {
+                return {
+                    url: `/restaurants`,
+                    method: 'POST',
+                    body,
+                }
+            },
+        }),
+        getRestaurants: builder.query({
+            query: (id) => `/restaurants/${id}`
+        }),
     })
 })
 
 // Export the auto-generated hook for the `getPost` query endpoint
-export const { useGetTokenMutation, useGetApplicationsQuery, useGetSetupStatusQuery, useCreateApplicationMutation, useCreateUserMutation } = apiSlice
+export const {
+    useGetTokenMutation,
+    useGetApplicationsQuery,
+    useGetSetupStatusQuery,
+    useCreateApplicationMutation,
+    useCreateUserMutation,
+    useAddRestaurantMutation,
+    useGetRestaurantsQuery }
+    = apiSlice
