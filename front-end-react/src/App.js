@@ -18,6 +18,8 @@ import SignUp from './Components/Setup/signup';
 import Setup from './Components/Setup/setup';
 import Login from './Components/Auth/login';
 import AdminHome from './Components/Admin/AdminHome';
+import Restaurants from './Components/Restaurants/Restaurants';
+import RestaurantDetails from './Components/Restaurants/RestaurantDetails';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -33,16 +35,12 @@ function App() {
       <Router>
         <div>
           <Switch>
-            <Route path="/signup" component={SignUp}>
-            </Route>
-            <Route path="/login" component={Login}>
-            </Route>
-            <Route path="/setup" component={Setup}>
-            </Route>
-            <Route path="/Admin" component={AdminHome}>
-            </Route>
-            <Route path="/" component={Home}>
-            </Route>
+            <Route path="/signup" component={SignUp}></Route>
+            <Route path="/login" component={Login}></Route>
+            <Route path="/setup" component={Setup}></Route>
+            <Route path="/Admin" component={AdminHome}></Route>
+            <Route path="/restaurants" component={Restaurants}></Route>
+            <Route path="/restaurant/:id" component={RestaurantDetails}></Route>
           </Switch>
         </div>
       </Router>

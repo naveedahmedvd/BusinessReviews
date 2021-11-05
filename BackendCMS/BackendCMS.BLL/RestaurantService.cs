@@ -37,16 +37,27 @@ namespace BackendCMS.BLL
             this.reviewRepository = reviewRepository;
             this.userRepository = userRepository;
         }
-        public bool Add(Restaurant restaurant)
+
+        public IEnumerable<Restaurant> Get()
+        {
+            return restaurantRepository.GetAll();
+        }
+
+        public Restaurant Get(int id)
+        {
+            return restaurantRepository.GetById(id);
+        }
+
+        public Restaurant Add(Restaurant restaurant)
         {
             if (restaurantRepository.GetAllQueryable().Count(x => x.PlaceId == restaurant.PlaceId) > 0)
                 throw new AlreadyExistsException();
 
             var timingsEntity = timingsRepository.Insert(restaurant.Timings);
-            
+
             restaurant.TimingsId = timingsEntity.TimingsId;
             var restaurantEntity = restaurantRepository.Insert(restaurant);
-            
+
             foreach (var review in restaurant.Reviews)
             {
                 review.RestaurantId = restaurantEntity.RestaurantId;
@@ -58,7 +69,7 @@ namespace BackendCMS.BLL
                 photoRepository.Insert(photo);
             }
             context.SaveChanges();
-            return true;
+            return restaurantEntity;
         }
     }
 }

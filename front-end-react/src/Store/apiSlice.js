@@ -72,8 +72,11 @@ export const apiSlice = createApi({
                 }
             },
         }),
-        getRestaurants: builder.query({
+        getRestaurant: builder.query({
             query: (id) => `/restaurants/${id}`
+        }),
+        getRestaurants: builder.query({
+            query: () => `/restaurants`
         }),
     })
 })
@@ -86,5 +89,7 @@ export const {
     useCreateApplicationMutation,
     useCreateUserMutation,
     useAddRestaurantMutation,
-    useGetRestaurantsQuery }
+    useGetRestaurantsQuery,
+    useGetRestaurantQuery,
+}
     = apiSlice
