@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Loader } from "@googlemaps/js-api-loader"
-import 'react-autocomplete-input/dist/bundle.css';
 import { setSelectedPlaceFromAutocomplete } from "../../Store/RestaurantsSlice";
 import './home.css';
 const loader = new Loader({

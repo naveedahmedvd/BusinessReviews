@@ -2,14 +2,7 @@ import React, { useState } from "react";
 import { useEffect, useRef } from "react";
 
 import Navbar from "../Navigation/Navbar";
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-
-import applicationApi from '../../APIs/ApplicationApi';
 import { apiSlice, useGetSetupStatusQuery } from '../../Store/apiSlice'
-import { useSelector } from "react-redux";
-import { Loader } from "@googlemaps/js-api-loader"
-import 'react-autocomplete-input/dist/bundle.css';
 import SearchBar from "./SearchBar";
 
 import {
@@ -63,11 +56,10 @@ export default function Home(props) {
     }, [])
 
 
-
-
     return (
         <div>
             <Navbar Title={appName} />
+            <h1>Home</h1>
             <SearchBar />
         </div>
 

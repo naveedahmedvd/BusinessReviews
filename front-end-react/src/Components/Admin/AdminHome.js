@@ -17,14 +17,14 @@ export default function AdminHome(props) {
         const selectedRestaurant = store.getState().restaurant.selectedPlaceFromAutocomplete;
         console.log(selectedRestaurant);
         addRestaurant(selectedRestaurant).then(x => {
-            console.log('restaurant added',x);
+            console.log('restaurant added', x);
         })
     }
 
     return (
         <div>
             <Navbar Title={"Admin Panel"} />
-
+            <h1>Admin</h1>
             <div>
                 <SearchBar />
             </div>
