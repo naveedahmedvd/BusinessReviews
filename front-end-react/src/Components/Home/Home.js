@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useEffect, useRef } from "react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Navbar from "../Navigation/Navbar";
 import { apiSlice, useGetSetupStatusQuery } from '../../Store/apiSlice'
 import SearchBar from "./SearchBar";
-
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import {
     useComponentDidMount,
     useComponentDidUpdate,
@@ -61,6 +61,8 @@ export default function Home(props) {
             <Navbar Title={appName} />
             <h1>Home</h1>
             <SearchBar />
+            <FontAwesomeIcon icon={faSearch} color={"blue"} size={'5x'}/>
+            
         </div>
 
     )
