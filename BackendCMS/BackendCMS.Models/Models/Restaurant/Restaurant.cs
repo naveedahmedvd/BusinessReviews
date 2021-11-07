@@ -58,7 +58,7 @@ namespace BackendCMS.Models.Models.Restaurant
         public double Rating { get; set; }
 
         [JsonPropertyName("reviews")]
-        public List<Review> Reviews { get; set; }
+        public virtual List<Review> Reviews { get; set; }
 
         [JsonPropertyName("types")]
         public string Types { get; set; }

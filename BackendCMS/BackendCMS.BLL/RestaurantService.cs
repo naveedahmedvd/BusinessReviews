@@ -40,7 +40,7 @@ namespace BackendCMS.BLL
 
         public IEnumerable<Restaurant> Get()
         {
-            return restaurantRepository.GetAll();
+            return restaurantRepository.GetAll("Reviews,Photos,Timings");
         }
 
         public Restaurant Get(int id)

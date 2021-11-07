@@ -8,7 +8,7 @@ namespace BackendCMS.DAL.Repository
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(string includes = "");
         T GetById(object id);
         T Insert(T obj);
         void Update(T obj);

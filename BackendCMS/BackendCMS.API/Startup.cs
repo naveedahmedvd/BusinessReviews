@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BackendCMS.API
@@ -70,8 +71,14 @@ namespace BackendCMS.API
             services.AddTransient<ApplicationService>();
             services.AddTransient<AccountService>();
             services.AddTransient<RestaurantService>();
-            services.AddControllers();
-            
+            //services.AddControllers().AddJsonOptions(options =>
+            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
+            //);
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BackendCMS.API", Version = "v1" });

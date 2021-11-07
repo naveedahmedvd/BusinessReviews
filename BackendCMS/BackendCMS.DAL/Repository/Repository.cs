@@ -17,9 +17,13 @@ namespace BackendCMS.DAL.Repository
             table = _context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string includes = "")
         {
-            return table.ToList();
+            var includesList = includes.Split(",");
+            var query = table.AsQueryable();
+            foreach (var include in includesList)
+                query = query.Include(include.Trim());
+            return query.ToList();
         }
         public IQueryable<T> GetAllQueryable()
         {
