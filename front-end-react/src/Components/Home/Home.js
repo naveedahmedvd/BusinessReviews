@@ -52,6 +52,7 @@ export default function Home(props) {
     }
 
     useEffect(() => {
+        
         setMounted(true);
     }, [])
 

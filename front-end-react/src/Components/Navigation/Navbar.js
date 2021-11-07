@@ -37,6 +37,9 @@ export default function Navbar({ Title }) {
                     <Typography variant="h6" color="inherit">
                         <Link href="/Admin">Admin</Link>
                     </Typography>
+                    <Typography variant="h6" color="inherit">
+                        <Link href="/Restaurants">Restaurants</Link>
+                    </Typography>
                     {/* <FadeMenu/> */}
                 </Toolbar>
             </AppBar>

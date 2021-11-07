@@ -16,16 +16,16 @@ let placesService;
 export default function Maps(props) {
 
     const { mapsLoader } = props;
-    console.log(loader);
     loader.load().then(() => {
         const div = document.getElementById("map");
         const map = new window.google.maps.Map(div, {
             center: { lat: -34.397, lng: 150.644 },
             zoom: 8,
         });
-        mapsLoader();
+        
         placesService = new window.google.maps.places.PlacesService(div);
         PlacesService.service = placesService;
+        mapsLoader();
     });
 
     return (

@@ -15,7 +15,7 @@ export default function Review(props) {
     }
     return (
         <div style={commentStyle}>
-            {review.authorName} said
+            {review.author_name} said
             <p >{review.text}</p>
 
         </div>
