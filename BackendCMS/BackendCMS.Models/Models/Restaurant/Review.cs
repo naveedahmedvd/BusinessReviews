@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -10,28 +11,28 @@ namespace BackendCMS.Models.Models.Restaurant
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReviewId { get; set; }
         public int RestaurantId { get; set; }
-        [JsonPropertyName("author_name")]
+        [JsonProperty("author_name")]
         public string AuthorName { get; set; }
 
-        [JsonPropertyName("author_url")]
+        [JsonProperty("author_url")]
         public string AuthorUrl { get; set; }
 
-        [JsonPropertyName("language")]
+        [JsonProperty("language")]
         public string Language { get; set; }
 
-        [JsonPropertyName("profile_photo_url")]
+        [JsonProperty("profile_photo_url")]
         public string ProfilePhotoUrl { get; set; }
 
-        [JsonPropertyName("rating")]
+        [JsonProperty("rating")]
         public int Rating { get; set; }
 
-        [JsonPropertyName("relative_time_description")]
+        [JsonProperty("relative_time_description")]
         public string RelativeTimeDescription { get; set; }
 
-        [JsonPropertyName("text")]
+        [JsonProperty("text")]
         public string Text { get; set; }
 
-        [JsonPropertyName("time")]
+        [JsonProperty("time")]
         public int Time { get; set; }
         public virtual Restaurant Restaurant { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -11,7 +12,7 @@ namespace BackendCMS.Models.Models.Restaurant
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PhotoId { get; set; }
         public int RestaurantId { get; set; }
-        [JsonPropertyName("url")]
+        [JsonProperty("url")]
         public string Url { get; set; }
         public virtual Restaurant Restaurant { get; set; }
     }

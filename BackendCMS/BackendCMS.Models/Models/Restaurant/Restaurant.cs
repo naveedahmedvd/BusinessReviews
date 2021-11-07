@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,68 +16,68 @@ namespace BackendCMS.Models.Models.Restaurant
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RestaurantId { get; set; }
-        [JsonPropertyName("placeId")]
+        [JsonProperty("placeId")]
         public string PlaceId { get; set; }
 
-        [JsonPropertyName("isActive")]
+        [JsonProperty("isActive")]
         public bool IsActive { get; set; }
 
-        [JsonPropertyName("restaurantName")]
+        [JsonProperty("restaurantName")]
         public string RestaurantName { get; set; }
 
-        [JsonPropertyName("address")]
+        [JsonProperty("address")]
         public string Address { get; set; }
 
-        [JsonPropertyName("photos")]
+        [JsonProperty("photos")]
         public List<Photo> Photos { get; set; }
 
-        [JsonPropertyName("latitude")]
+        [JsonProperty("latitude")]
         public double Latitude { get; set; }
 
-        [JsonPropertyName("longitude")]
+        [JsonProperty("longitude")]
         public double Longitude { get; set; }
 
-        [JsonPropertyName("phone")]
+        [JsonProperty("phone")]
         public string Phone { get; set; }
 
-        [JsonPropertyName("international_phone")]
+        [JsonProperty("international_phone")]
         public string InternationalPhone { get; set; }
 
-        [JsonPropertyName("iconUrl")]
+        [JsonProperty("iconUrl")]
         public string IconUrl { get; set; }
 
-        [JsonPropertyName("iconBackgroundColor")]
+        [JsonProperty("iconBackgroundColor")]
         public string IconBackgroundColor { get; set; }
 
-        [JsonPropertyName("iconMaskUrl")]
+        [JsonProperty("iconMaskUrl")]
         public string IconMaskUrl { get; set; }
 
-        [JsonPropertyName("priceLevel")]
+        [JsonProperty("priceLevel")]
         public int PriceLevel { get; set; }
 
-        [JsonPropertyName("rating")]
+        [JsonProperty("rating")]
         public double Rating { get; set; }
 
-        [JsonPropertyName("reviews")]
+        [JsonProperty("reviews")]
         public virtual List<Review> Reviews { get; set; }
 
-        [JsonPropertyName("types")]
+        [JsonProperty("types")]
         public string Types { get; set; }
 
-        [JsonPropertyName("googleUrl")]
+        [JsonProperty("googleUrl")]
         public string GoogleUrl { get; set; }
 
-        [JsonPropertyName("userRatingsCount")]
+        [JsonProperty("userRatingsCount")]
         public int UserRatingsCount { get; set; }
 
-        [JsonPropertyName("utcOffset")]
+        [JsonProperty("utcOffset")]
         public int UtcOffset { get; set; }
 
-        [JsonPropertyName("website")]
+        [JsonProperty("website")]
         public string Website { get; set; }
 
         public int TimingsId { get; set; }
-        [JsonPropertyName("timings")]
+        [JsonProperty("timings")]
         public virtual Timings Timings { get; set; }
     }
 
