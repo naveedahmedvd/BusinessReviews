@@ -116,3 +116,4 @@ BackendCMS/.vs/
 BackendCMS/IdentityServer/bin/
 BackendCMS/IdentityServer/obj/
 front-end-react/package-lock.json
+BackendCMS/BackendCMS.API/BackendCMS.API.csproj.user

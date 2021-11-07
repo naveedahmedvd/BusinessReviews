@@ -2,30 +2,43 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Loader } from "@googlemaps/js-api-loader"
 import { setSelectedPlaceFromAutocomplete } from "../../Store/RestaurantsSlice";
 import './home.css';
-const loader = new Loader({
-    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-    libraries: ['places']
-});
-
+import Maps from './Maps';
+import PlacesService from '../../Services/PlacesService'
 let autocomplete;
-let placesService;
 let selectedCityLocation;
-
 
 export default function SearchBar(props) {
     const dispatch = useDispatch();
 
     const [autocompleteList, setAutocompleteList] = useState([]);
-    const handleChange = (e) => {
+    const loadAutocompleteUI = () => {
+
+        const countryRestrict = { country: "pk" };
+        autocomplete = new window.google.maps.places.Autocomplete(
+            document.getElementById("autocomplete"),
+            {
+                types: ["(cities)"],
+                componentRestrictions: countryRestrict,
+            }
+        );
+        autocomplete.addListener("place_changed", () => {
+            const selectedCity = autocomplete.getPlace();
+            setAutocompleteList([]);
+            console.log(selectedCity);
+            selectedCityLocation = new window.google.maps.LatLng(selectedCity.geometry.location.lat(), selectedCity.geometry.location.lng());
+        });
+        // placesService = new window.google.maps.places.PlacesService(div);
+    }
+
+    const handleTextChangeRestaurantAutocomplete = (e) => {
         const textSearchRequest = {
             query: e.target.value,
             type: 'restaurant',
             location: selectedCityLocation,
         }
-        placesService.textSearch(textSearchRequest, (list) => {
+        PlacesService.service.textSearch(textSearchRequest, (list) => {
             setAutocompleteList(list);
         });
     }
@@ -35,7 +48,7 @@ export default function SearchBar(props) {
         const placeDetailsRequest = {
             placeId: value.place_id,
         }
-        placesService.getDetails(placeDetailsRequest, (placeDetails) => {
+        PlacesService.service.getDetails(placeDetailsRequest, (placeDetails) => {
             var photos = placeDetails.photos.map(x => { return { url: x.getUrl() } });
             const latitude = placeDetails.geometry.location.lat();
             const longitude = placeDetails.geometry.location.lng();
@@ -101,34 +114,10 @@ export default function SearchBar(props) {
             dispatch(setSelectedPlaceFromAutocomplete(details));
         });
     }
-    loader.load().then(() => {
-        const div = document.getElementById("map");
-        const map = new window.google.maps.Map(div, {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8,
-        });
-        const countryRestrict = { country: "pk" };
-        autocomplete = new window.google.maps.places.Autocomplete(
-            document.getElementById("autocomplete"),
-            {
-                types: ["(cities)"],
-                componentRestrictions: countryRestrict,
-            }
-        );
-        autocomplete.addListener("place_changed", () => {
-            const selectedCity = autocomplete.getPlace();
-            setAutocompleteList([]);
-            console.log(selectedCity);
-            selectedCityLocation = new window.google.maps.LatLng(selectedCity.geometry.location.lat(), selectedCity.geometry.location.lng());
-        });
-        placesService = new window.google.maps.places.PlacesService(div);
-
-
-    });
 
     return (
         <div>
-            <div id='map'></div>
+            <Maps mapsLoader={loadAutocompleteUI} />
             <div className="locationField-container">
                 <div className="locationField" style={{ width: "700px" }}>
                     <Autocomplete
@@ -138,7 +127,7 @@ export default function SearchBar(props) {
                         fullWidth={true}
                         options={autocompleteList}
                         getOptionLabel={option => `${option.name} ${option.formatted_address}`}
-                        renderInput={(params) => <TextField onChange={handleChange} {...params} label="Search restaurants" />}
+                        renderInput={(params) => <TextField onChange={handleTextChangeRestaurantAutocomplete} {...params} label="Search restaurants" />}
                     />
                 </div>
                 <div className="locationField">
