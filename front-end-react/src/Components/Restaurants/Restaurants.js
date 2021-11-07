@@ -3,14 +3,13 @@
 
 import React, { useState } from "react";
 import Navbar from "../Navigation/Navbar";
-import { useSelector } from "react-redux";
-import SearchBar from "../Home/SearchBar";
-import { Button } from "@mui/material";
-import store from "../../Store/store";
+import Restaurant from "./Restaurant";
+
 import { useGetRestaurantsQuery } from "../../Store/apiSlice";
 
 export default function Restaurants(props) {
 
+    let list;
     const {
         data,
         isLoading,
@@ -19,17 +18,19 @@ export default function Restaurants(props) {
         error
     } = useGetRestaurantsQuery();
 
-    if (isSuccess){
+    if (isSuccess) {
         console.log(data)
-        debugger;
+        list = data.map((x, idx) => <Restaurant key={idx} restaurant={x} />)
+
     }
-    
+
     return (
         <div>
             <Navbar Title={"App"} />
             <h1>
                 Restaurants
             </h1>
+            {list}
         </div>
 
     )
