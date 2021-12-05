@@ -1,5 +1,3 @@
-
-
 import React, { useRef, useState, useEffect } from "react";
 import Navbar from "../Navigation/Navbar";
 import { useSelector } from "react-redux";
@@ -19,6 +17,7 @@ import FormDialog from "../Shared/FormDialog";
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Timings from "./Timings";
+import Carousel from "../Shared/Carousel";
 
 export default function RestaurantDetails(props) {
 
@@ -157,7 +156,12 @@ export default function RestaurantDetails(props) {
                     <Navbar Title={"App"} />
                 </Grid>
                 <Grid item xs={12}>
-                    <ImageSlider imagesUrl={restaurant.photos.map(x=>x.url)} />
+                    {/* <ImageSlider imagesUrl={restaurant.photos.map(x => x.url)} /> */}
+                    <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                        <Carousel show={4} infiniteLoop withIndicator>
+                            {restaurant.photos.map((x, idx) => <img src={x.url} key={idx} alt="placeholder" style={{height:'300px'}} />)}
+                        </Carousel>
+                    </div>
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={7}>
@@ -175,7 +179,7 @@ export default function RestaurantDetails(props) {
                                     </Typography>
                                     <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                                         <Rating name="read-only" precision={0.5} value={restaurant.averageRating} readOnly />
-                                        <typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="h3" component="div" color="text.primary">{` ${restaurant.totalReviews} Reviews`}</typography>
+                                        <typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="h3" component="div" color="text.primary">{` ${restaurant.reviews?.length} Reviews`}</typography>
                                     </Box>
                                     <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="body2" color="text.secondary">
                                         {restaurant.address}
