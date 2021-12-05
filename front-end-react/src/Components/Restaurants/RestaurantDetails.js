@@ -156,10 +156,9 @@ export default function RestaurantDetails(props) {
                     <Navbar Title={"App"} />
                 </Grid>
                 <Grid item xs={12}>
-                    {/* <ImageSlider imagesUrl={restaurant.photos.map(x => x.url)} /> */}
                     <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                         <Carousel show={4} infiniteLoop withIndicator>
-                            {restaurant.photos.map((x, idx) => <img src={x.url} key={idx} alt="placeholder" style={{height:'300px'}} />)}
+                            {restaurant.photos.map((x, idx) => <img src={x.url} key={idx} alt="placeholder" style={{ height: '300px' }} />)}
                         </Carousel>
                     </div>
                 </Grid>
@@ -170,7 +169,7 @@ export default function RestaurantDetails(props) {
                             <CardMedia
                                 component="img"
                                 sx={{ width: 500 }}
-                                image={restaurant.icon}
+                                image={restaurant.iconUrl}
                             />
                             <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                                 <CardContent style={{ alignItems: "center", justify: "center" }}>
@@ -178,8 +177,8 @@ export default function RestaurantDetails(props) {
                                         {restaurant.name}
                                     </Typography>
                                     <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                                        <Rating name="read-only" precision={0.5} value={restaurant.averageRating} readOnly />
-                                        <typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="h3" component="div" color="text.primary">{` ${restaurant.reviews?.length} Reviews`}</typography>
+                                        <Rating name="read-only" precision={0.5} value={restaurant.rating} readOnly />
+                                        <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="h3" component="div" color="text.primary">{` ${restaurant.reviews?.length} Reviews`}</Typography>
                                     </Box>
                                     <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="body2" color="text.secondary">
                                         {restaurant.address}
@@ -196,39 +195,27 @@ export default function RestaurantDetails(props) {
                         <CardContent>
                             <Typography align='left' style={{ fontSize: 25, fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700 }} component='h1'>Hours</Typography>
                             <List>
-                                {/* {restaurant.timings.map(x => <ListItem disablePadding><ListItemText>{x}</ListItemText></ListItem>)} */}
                                 <Timings timings={restaurant.timings} />
                             </List>
                         </CardContent>
                         <Divider variant="fullWidth" component="div" />
-                        {restaurant.reviews.map(x => <><Card>
-                            <CardHeader style={{ marginLeft: '2px' }}
-                                avatar={
-                                    <Avatar aria-label="recipe">
-                                        {x.avatar}
-                                    </Avatar>
-                                }
-                                // title={x.user}
-                                subheader={<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', textAlign: 'left', pl: 1, pb: 1 }}>
-                                    <typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700 }} color="text.primary">{x.user}</typography>
-                                    <Rating size="small" precision={0.5} name="read-only" value={x.rating} readOnly />
-                                    <typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif', fontSize: 11, fontWeight: 400 }} color="text.primary">{x.location}</typography></Box>}
-                            />
-                            {/* <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                                <Avatar aria-label="recipe">
-                                    {x.avatar}
-                                </Avatar>
-                                <Typography>{x.user}</Typography>
-                            </Box>
-                            <Box sx={{ flexDirection: 'row' }}>
-                                <Rating name="read-only" value={x.rating} readOnly />
-                                <typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} color="text.primary">{x.location}</typography>
-                            </Box>
-                        </CardContent> */}
-                            <CardContent> <Typography align='left' style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} flexWrap variant="body2" color="text.secondary">
-                                {x.comments}</Typography></CardContent>
-                        </Card><Divider variant="fullWidth" component="div" /></>)}
+                        {restaurant.reviews.map((x, idx) => <>
+                            <Card key={idx}>
+                                <CardHeader style={{ marginLeft: '2px' }}
+                                    avatar={
+                                        <Avatar aria-label="recipe">
+                                            {x.profile_photo_url}
+                                        </Avatar>
+                                    }
+                                    subheader={<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', textAlign: 'left', pl: 1, pb: 1 }}>
+                                        <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700 }} color="text.primary">{x.author_name}</Typography>
+                                        <Rating size="small" precision={0.5} name="read-only" value={x.rating} readOnly />
+                                        <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif', fontSize: 11, fontWeight: 400 }} color="text.primary">{x.relative_time_description}</Typography></Box>}
+                                />
+                                <CardContent> <Typography align='left' style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} flexWrap variant="body2" color="text.secondary">
+                                    {x.text}</Typography></CardContent>
+                            </Card>
+                            <Divider variant="fullWidth" component="div" /></>)}
                     </Card>
                 </Grid>
                 <Grid item xs={4} style={{ position: 'fixed', top: '43%', left: '70%' }}>
