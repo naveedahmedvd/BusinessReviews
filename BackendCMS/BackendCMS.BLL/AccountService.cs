@@ -99,7 +99,7 @@ namespace BackendCMS.BLL
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
         }
         public TokenModel GetToken(string username, string password)
@@ -117,6 +117,8 @@ namespace BackendCMS.BLL
             request.AddParameter("password", password);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
+            if (response.Content.Contains("error"))
+                throw new UnauthorizedAccessException();
             return System.Text.Json.JsonSerializer.Deserialize<TokenModel>(response.Content);
         }
         public TokenModel GetToken(string refreshToken)

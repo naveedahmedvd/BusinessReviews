@@ -7,40 +7,58 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from '@mui/material';
+import './navbar.css';
 
-// Using Inline Styling
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-}));
+// // Using Inline Styling
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//         flexGrow: 1,
+//     },
+//     menuButton: {
+//         marginRight: theme.spacing(2),
+//     },
+// }));
 
 // Exporting Default Navbar to the App.js File
 export default function Navbar({ Title }) {
-    const classes = useStyles();
+    // const classes = useStyles();
 
+    const menuItems = [
+        {
+            url: '/',
+            title: 'Business Reviews'
+        },
+        {
+            url: '/Restaurants',
+            title: 'Restaurants'
+        },
+    ];
+    if (!localStorage.getItem('jwt')) {
+        menuItems.push({
+            url: '/signup',
+            title: 'Sign Up'
+        });
+        menuItems.push({
+            url: '/login',
+            title: 'Login'
+        });
+    }
+    else {
+        menuItems.push({
+            url: '/Admin',
+            title: 'Admin'
+        });
+    }
+    const menu = menuItems.map((x, idx) => <Typography key={idx} variant="h6" color="inherit"> <Link className='menuItem' href={x.url} style={{ textDecoration: 'none' }}>{x.title}</Link></Typography>)
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
+        <div>
+            <AppBar position="static" color="transparent">
                 <Toolbar variant="dense">
                     <IconButton edge="start"
-                        className={classes.menuButton}
                         color="inherit" aria-label="menu">
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit">
-                        {Title}
-                    </Typography>
-                    <Typography variant="h6" color="inherit">
-                        <Link href="/Admin">Admin</Link>
-                    </Typography>
-                    <Typography variant="h6" color="inherit">
-                        <Link href="/Restaurants">Restaurants</Link>
-                    </Typography>
-                    {/* <FadeMenu/> */}
+                    {menu}
                 </Toolbar>
             </AppBar>
         </div>

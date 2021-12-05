@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace BackendCMS.API.Controllers
 {
-    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantsController : ControllerBase
@@ -26,6 +25,7 @@ namespace BackendCMS.API.Controllers
         }
         // GET: api/<RestaurantsController>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             try
@@ -40,6 +40,7 @@ namespace BackendCMS.API.Controllers
 
         // GET api/<RestaurantsController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult Get(int id)
         {
             try
@@ -72,12 +73,14 @@ namespace BackendCMS.API.Controllers
 
         // PUT api/<RestaurantsController>/5
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<RestaurantsController>/5
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public void Delete(int id)
         {
         }

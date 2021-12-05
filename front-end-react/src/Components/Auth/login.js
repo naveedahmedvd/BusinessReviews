@@ -68,10 +68,14 @@ export default function Login(props) {
     var response = getToken({ Username: user.Email, Password: user.Password })
       .then(response => {
         //save token
-        //console.log(response.data.access_token);
-        dispatch(setToken(response.data.access_token))
-        localStorage.setItem('jwt', response.data.access_token)
-        props.history.push('/');
+        if (response.data && response.data.accessToken) {
+          dispatch(setToken(response.data.accessToken))
+          localStorage.setItem('jwt', response.data.accessToken)
+          props.history.push('/');
+        }
+        else if (response.error) {
+          console.log(response.error);
+        }
       })
       .catch(error => {
         console.log('unable to login', error);
@@ -95,7 +99,7 @@ export default function Login(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Login
         </Typography>
         <form className={classes.form}
           noValidate

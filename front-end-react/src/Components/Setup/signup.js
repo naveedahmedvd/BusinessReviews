@@ -77,9 +77,15 @@ export default function SignUp(props) {
         getToken({ Username: user.Username, Password: user.Password })
           .then(response => {
             //save token
-            console.log(response.data.access_token);
-            dispatch(setToken(response.data.access_token))
-            localStorage.setItem('jwt', response.data.access_token)
+            debugger;
+            if (response.data && response.data.accessToken) {
+              dispatch(setToken(response.data.accessToken))
+              localStorage.setItem('jwt', response.data.accessToken)
+              props.history.push('/');
+            }
+            else if (response.error) {
+              console.log(response.error);
+            }
           })
           .catch(error => {
             console.log('unable to login', error);

@@ -26,30 +26,44 @@ namespace BackendCMS.API.Controllers
         [AllowAnonymous]
         public IActionResult CreateUser([FromBody] RegisterViewModel registerViewModel)
         {
-            var count = accountService.UserCount();
-            if (!User.Identity.IsAuthenticated && count > 0)
-                return BadRequest();
-            if (count == 0)
-                registerViewModel.IsAdmin = true;
-            return Ok(accountService.CreateUser(registerViewModel));
+            try
+            {
+                var count = accountService.UserCount();
+                if (!User.Identity.IsAuthenticated && count > 0)
+                    return BadRequest();
+                if (count == 0)
+                    registerViewModel.IsAdmin = true;
+                return Ok(accountService.CreateUser(registerViewModel));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpPost]
         [Route("[action]")]
         [AllowAnonymous]
-        public TokenModel Token([FromBody] LoginViewModel model)
+        public IActionResult Token([FromBody] LoginViewModel model)
         {
-            TokenModel token;
-            if (string.IsNullOrEmpty(model.refreshToken))
-                token = accountService.GetToken(model.username, model.password);
-            else
-                token = accountService.GetToken(model.refreshToken);
-            if (token.AccessToken != null)
-                Response.Cookies.Append("accessToken", token.AccessToken, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Expires = DateTime.UtcNow.AddDays(7),
-                });
-            return token;
+            try
+            {
+                TokenModel token;
+                if (string.IsNullOrEmpty(model.refreshToken))
+                    token = accountService.GetToken(model.username, model.password);
+                else
+                    token = accountService.GetToken(model.refreshToken);
+                if (token.AccessToken != null)
+                    Response.Cookies.Append("accessToken", token.AccessToken, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = DateTime.UtcNow.AddDays(7),
+                    });
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized();
+            }
         }
     }
 }
