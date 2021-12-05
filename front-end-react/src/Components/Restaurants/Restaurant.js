@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
@@ -6,12 +5,17 @@ import Navbar from "../Navigation/Navbar";
 import Reviews from "./Reviews";
 import PlacesService from "../../Services/PlacesService";
 import Maps from "../Home/Maps";
+import './restaurant.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faMap, faMapMarkedAlt, faMapMarker, faMapPin, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from 'react-router-dom';
+
 export default function Restaurant(props) {
     const [photos, setPhotos] = useState([])
     const [mounted, setMounted] = useState(false)
     const [refreshed, setRefreshed] = useState(false)
 
-    const { restaurant } = props;
+    const { restaurant, index } = props;
 
     const imgStyle = {
         width: "100px",
@@ -24,6 +28,11 @@ export default function Restaurant(props) {
             placeId
         }
         PlacesService.service.getDetails(placeDetailsRequest, (placeDetails) => {
+            if (!placeDetails) {
+                const tmp = placeId;
+                return;
+            }
+
             var photos = placeDetails.photos.map(x => { return { url: x.getUrl() } });
             setPhotos(photos);
             setRefreshed(true);
@@ -100,20 +109,38 @@ export default function Restaurant(props) {
     useEffect(() => {
         setMounted(true);
     }, [])
-    const photosHtml = photos.map((x, idx) => <img style={imgStyle} key={idx} src={x.url} />)
-    return (
-        <div>
-            <Maps mapsLoader={() => { refreshDataFromGoogle(restaurant.placeId); }} />
-            <img src={restaurant.iconUrl} />
+    const photosHtml = photos.slice(0, 5).map((x, idx) => <img style={imgStyle} key={idx} src={x.url} />)
+    let ratingIconsList = [];
+    for (let i = 0; i < restaurant.rating - 1; i++) {
+        ratingIconsList.push(<FontAwesomeIcon icon={faStar} color={"red"} size={'1x'} />);
+    }
+    const ratingIcons = ratingIconsList.map((x, idx) => <FontAwesomeIcon icon={faStar} color={"red"} size={'1x'} key={idx} />);
 
-            <h1>
-                {restaurant.restaurantName}
-            </h1>
-            <p>Address: {restaurant.address}</p>
-            <Link to={{ pathname: restaurant.googleUrl }} target="_blank" >See on Map</Link>
+    const history = useHistory();
+    const clickHandle = () => {
+        history.push(`/restaurant/${restaurant.restaurantId}`,restaurant);
+    }
+
+    return (
+        <div className='rest-container'>
+            <Maps mapsLoader={() => { refreshDataFromGoogle(restaurant.placeId); }} />
+            <div className="title-box" onClick={clickHandle}>
+                <img src={restaurant.iconUrl} />
+
+                <div>
+                    <h2 className="rest-title">
+                        {index + 1} - {restaurant.restaurantName}
+                    </h2>
+                    <div>Address: {restaurant.address}</div>
+                    <div>Phone: {restaurant.phone}</div>
+                    {ratingIcons}
+                </div>
+            </div>
+
+            <Link to={{ pathname: restaurant.googleUrl }} target="_blank" ><FontAwesomeIcon icon={faMapMarkerAlt} color={"red"} size={'1x'} /> See on map</Link>
 
             <br /> {photosHtml}
-            <Reviews reviews={restaurant.reviews} />
+            {/* <Reviews reviews={restaurant.reviews} /> */}
         </div>
 
     )

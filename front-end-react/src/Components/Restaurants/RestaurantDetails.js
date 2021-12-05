@@ -10,13 +10,13 @@ import { apiSlice } from "../../Store/apiSlice";
 
 export default function RestaurantDetails(props) {
 
-    const [getRestaurants] = apiSlice.endpoints.getRestaurants.useQuery();
-
+    const restaurant = props.location.state;
+    console.log();
     return (
         <div>
             <Navbar Title={"App"} />
            <h1>
-               Restaurant Details
+               {restaurant.restaurantName}
            </h1>
         </div>
 

@@ -1,0 +1,14 @@
+.rest-title{
+    text-align: left;
+    font-family:'Times New Roman', Times, serif;
+    text-decoration: underline;
+}
+.title-box{
+    display: flex;
+    flex-direction: row;
+}
+.rest-container{
+    border: 1px solid gray;
+    padding: 3%;
+    margin: 2%;
+}

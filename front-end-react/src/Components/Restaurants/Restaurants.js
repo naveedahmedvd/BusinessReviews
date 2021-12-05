@@ -20,7 +20,7 @@ export default function Restaurants(props) {
 
     if (isSuccess) {
         console.log(data)
-        list = data.map((x, idx) => <Restaurant key={idx} restaurant={x} />)
+        list = data.map((x, idx) => <Restaurant key={idx} restaurant={x} index={idx} />)
 
     }
 
