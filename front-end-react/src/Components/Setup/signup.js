@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../Navigation/Navbar";
 import { useSelector, useDispatch } from 'react-redux'
-
+import jwt from 'jwt-decode'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { apiSlice } from "../../Store/apiSlice";
 import { setToken } from '../../Store/AuthSlice';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -62,6 +63,21 @@ export default function SignUp(props) {
 
   const [createUser] = apiSlice.endpoints.createUser.useMutation();
 
+  const loginCallback = (response) => {
+    if (response.data && response.data.accessToken) {
+      dispatch(setToken(response.data.accessToken))
+      const userData = jwt(response.data.accessToken);
+      console.log(userData);
+      localStorage.setItem('userData', JSON.stringify(userData))
+      localStorage.setItem('jwt', response.data.accessToken)
+      props.history.push('/');
+    }
+    else if (response.error) {
+      alert('unable to login')
+      console.log(response.error);
+    }
+  }
+
   const OnSubmit = (e) => {
     e.preventDefault();
     const user = {
@@ -74,23 +90,21 @@ export default function SignUp(props) {
     };
     var response = createUser(user)
       .then(x => {
-        getToken({ Username: user.Username, Password: user.Password })
-          .then(response => {
-            //save token
-            debugger;
-            if (response.data && response.data.accessToken) {
-              dispatch(setToken(response.data.accessToken))
-              localStorage.setItem('jwt', response.data.accessToken)
-              props.history.push('/');
-            }
-            else if (response.error) {
-              console.log(response.error);
-            }
-          })
-          .catch(error => {
-            console.log('unable to login', error);
-          })
-        props.history.push('/setup');
+        if (!x.error) {
+          getToken({ Username: user.Username, Password: user.Password })
+            .then(response => {
+              loginCallback(response);
+            })
+            .catch(error => {
+              console.log('unable to login', error);
+            })
+          // props.history.push('/setup');
+        }
+        else {
+          debugger;
+          alert('unable to create user without admin privileg');
+        }
+
       })
       .catch(err => {
         console.log('unable to sign up', err);

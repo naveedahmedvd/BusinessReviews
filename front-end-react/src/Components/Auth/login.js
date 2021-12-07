@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../Navigation/Navbar";
 import { useSelector, useDispatch } from 'react-redux'
-
+import jwt from 'jwt-decode'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -58,24 +58,31 @@ export default function Login(props) {
 
   const [getToken] = apiSlice.endpoints.getToken.useMutation();
 
-
+  const loginCallback = (response) => {
+    if (response.data && response.data.accessToken) {
+      dispatch(setToken(response.data.accessToken))
+      const userData = jwt(response.data.accessToken);
+      console.log(userData);
+      localStorage.setItem('userData', JSON.stringify(userData))
+      localStorage.setItem('jwt', response.data.accessToken)
+      props.history.push('/');
+    }
+    else if (response.error) {
+      alert('unable to login')
+      console.log(response.error);
+    }
+  }
   const OnSubmit = (e) => {
     e.preventDefault();
     const user = {
       Email: email,
       Password: password
     };
+
+
     var response = getToken({ Username: user.Email, Password: user.Password })
       .then(response => {
-        //save token
-        if (response.data && response.data.accessToken) {
-          dispatch(setToken(response.data.accessToken))
-          localStorage.setItem('jwt', response.data.accessToken)
-          props.history.push('/');
-        }
-        else if (response.error) {
-          console.log(response.error);
-        }
+        loginCallback(response);
       })
       .catch(error => {
         console.log('unable to login', error);

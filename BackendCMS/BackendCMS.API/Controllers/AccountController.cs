@@ -29,11 +29,14 @@ namespace BackendCMS.API.Controllers
             try
             {
                 var count = accountService.UserCount();
-                if (!User.Identity.IsAuthenticated && count > 0)
-                    return BadRequest();
+                //if (!User.Identity.IsAuthenticated && count > 1)
+                //    return BadRequest();
                 if (count == 0)
                     registerViewModel.IsAdmin = true;
-                return Ok(accountService.CreateUser(registerViewModel));
+                else
+                    registerViewModel.IsAdmin = false;
+                var data = accountService.CreateUser(registerViewModel);
+                return Ok();
             }
             catch (Exception ex)
             {

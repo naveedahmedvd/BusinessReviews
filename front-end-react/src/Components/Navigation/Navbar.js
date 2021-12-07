@@ -23,6 +23,16 @@ import './navbar.css';
 export default function Navbar({ Title }) {
     // const classes = useStyles();
 
+    const logout = (e) => {
+        e.preventDefault();
+        console.log('clicked', e);
+        localStorage.removeItem('jwt');
+        window.location.reload(false);
+    }
+
+
+    const jwt = localStorage.getItem('jwt');
+
     const menuItems = [
         {
             url: '/',
@@ -33,7 +43,7 @@ export default function Navbar({ Title }) {
             title: 'Restaurants'
         },
     ];
-    if (!localStorage.getItem('jwt')) {
+    if (!jwt) {
         menuItems.push({
             url: '/signup',
             title: 'Sign Up'
@@ -44,12 +54,24 @@ export default function Navbar({ Title }) {
         });
     }
     else {
+        const tmp = localStorage.getItem('userData');
+        const userData = JSON.parse(tmp ? tmp : {});
+        const isAdmin = userData.role == 'admin';
+        if (isAdmin) {
+            menuItems.push({
+                url: '/Admin',
+                title: 'Admin'
+            });
+
+        }
         menuItems.push({
-            url: '/Admin',
-            title: 'Admin'
+            url: '/Logout',
+            title: `Logout ${userData.given_name}`,
+            onClick: logout
         });
     }
-    const menu = menuItems.map((x, idx) => <Typography key={idx} variant="h6" color="inherit"> <Link className='menuItem' href={x.url} style={{ textDecoration: 'none' }}>{x.title}</Link></Typography>)
+
+    const menu = menuItems.map((x, idx) => <Typography key={idx} variant="h6" color="inherit"> <Link className='menuItem' onClick={x.onClick} href={x.url} style={{ textDecoration: 'none' }}>{x.title}</Link></Typography>)
     return (
         <div>
             <AppBar position="static" color="transparent">
