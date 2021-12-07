@@ -81,8 +81,17 @@ namespace BackendCMS.API.Controllers
         // DELETE api/<RestaurantsController>/5
         [HttpDelete("{id}")]
         [AllowAnonymous]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            try
+            {
+                restaurantService.Delete(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
     }
 }

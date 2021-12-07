@@ -7,13 +7,16 @@ import PlacesService from "../../Services/PlacesService";
 import Maps from "../Home/Maps";
 import './restaurant.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faMap, faMapMarkedAlt, faMapMarker, faMapPin, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faTrash, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from 'react-router-dom';
+import { apiSlice } from "../../Store/apiSlice";
 
 export default function Restaurant(props) {
+    const [removeRestaurant] = apiSlice.endpoints.removeRestaurant.useMutation();
     const [photos, setPhotos] = useState([])
     const [mounted, setMounted] = useState(false)
     const [refreshed, setRefreshed] = useState(false)
+    const [deleted, setDeleted] = useState(false)
 
     const { restaurant, index } = props;
 
@@ -118,12 +121,22 @@ export default function Restaurant(props) {
 
     const history = useHistory();
     const clickHandle = () => {
-        history.push(`/restaurant/${restaurant.restaurantId}`,restaurant);
+        history.push(`/restaurant/${restaurant.restaurantId}`, restaurant);
     }
 
+    const deleteRestaurant = (e) => {
+        console.log(`deleting ${restaurant.restaurantName}`);
+        removeRestaurant(restaurant.restaurantId).then(x => {
+            console.log(x);
+            if (!x.error)
+                setDeleted(true);
+        })
+
+    }
     return (
-        <div className='rest-container'>
+        <div hidden={deleted} className='rest-container'>
             <Maps mapsLoader={() => { refreshDataFromGoogle(restaurant.placeId); }} />
+            <FontAwesomeIcon className='trash-icon' icon={faTrash} color={"red"} size={'1x'} onClick={deleteRestaurant} />
             <div className="title-box" onClick={clickHandle}>
                 <img src={restaurant.iconUrl} />
 

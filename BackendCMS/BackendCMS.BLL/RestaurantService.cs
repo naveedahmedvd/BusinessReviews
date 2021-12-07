@@ -71,5 +71,21 @@ namespace BackendCMS.BLL
             context.SaveChanges();
             return restaurantEntity;
         }
+
+        public void Delete(int id)
+        {
+            var restaurant = restaurantRepository.GetAllQueryable("Reviews,Photos,Timings").Where(x => x.RestaurantId == id).SingleOrDefault();
+            foreach (var review in restaurant.Reviews)
+            {
+                reviewRepository.Delete(review.ReviewId);
+            }
+            foreach (var photo in restaurant.Photos)
+            {
+                photoRepository.Delete(photo.PhotoId);
+            }
+            restaurantRepository.Delete(id);
+            timingsRepository.Delete(restaurant.TimingsId);
+            context.SaveChanges();
+        }
     }
 }

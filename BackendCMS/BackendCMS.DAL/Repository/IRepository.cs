@@ -14,6 +14,6 @@ namespace BackendCMS.DAL.Repository
         void Update(T obj);
         void Delete(object id);
         void Save();
-        IQueryable<T> GetAllQueryable();
+        IQueryable<T> GetAllQueryable(string includes = "");
     }
 }

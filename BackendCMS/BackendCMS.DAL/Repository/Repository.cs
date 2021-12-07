@@ -19,15 +19,25 @@ namespace BackendCMS.DAL.Repository
 
         public IEnumerable<T> GetAll(string includes = "")
         {
-            var includesList = includes.Split(",");
             var query = table.AsQueryable();
-            foreach (var include in includesList)
-                query = query.Include(include.Trim());
+            if (!string.IsNullOrEmpty(includes))
+            {
+                var includesList = includes.Split(",");
+                foreach (var include in includesList)
+                    query = query.Include(include.Trim());
+            }
             return query.ToList();
         }
-        public IQueryable<T> GetAllQueryable()
+        public IQueryable<T> GetAllQueryable(string includes = "")
         {
-            return table.AsQueryable<T>();
+            var query = table.AsQueryable();
+            if (!string.IsNullOrEmpty(includes))
+            {
+                var includesList = includes.Split(",");
+                foreach (var include in includesList)
+                    query = query.Include(include.Trim());
+            }
+            return query;
         }
         public T GetById(object id)
         {

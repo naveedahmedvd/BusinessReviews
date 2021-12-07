@@ -72,6 +72,14 @@ export const apiSlice = createApi({
                 }
             },
         }),
+        removeRestaurant: builder.mutation({
+            query(id) {
+                return {
+                    url: `/restaurants/${id}`,
+                    method: 'DELETE'
+                }
+            },
+        }),
         getRestaurant: builder.query({
             query: (id) => `/restaurants/${id}`
         }),
@@ -89,6 +97,7 @@ export const {
     useCreateApplicationMutation,
     useCreateUserMutation,
     useAddRestaurantMutation,
+    useRemoveRestaurantMutation,
     useGetRestaurantsQuery,
     useGetRestaurantQuery,
 }

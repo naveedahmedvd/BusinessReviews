@@ -23,6 +23,9 @@ export default function AdminHome(props) {
     }
 
     const saveHandle = () => {
+        const restaurant = { ...selectedRestaurant };
+
+        restaurant.iconUrl = image.src
         addRestaurant(selectedRestaurant).then(x => {
             console.log('restaurant added', x);
         })
