@@ -27,8 +27,19 @@ export default function AdminHome(props) {
 
         restaurant.iconUrl = image.src
         addRestaurant(selectedRestaurant).then(x => {
-            console.log('restaurant added', x);
+            if (!x.error) {
+                console.log('restaurant added', x);
+                alert('restaurant added');
+                window.location.reload();
+            }
+            else {
+                alert('something went wrong');
+            }
+
         })
+            .catch(err => {
+                alert('something went wrong');
+            });
 
     }
 
