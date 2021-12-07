@@ -50,7 +50,7 @@ export default function AdminHome(props) {
 
     return (
         <div>
-            <Navbar Title={"Admin Panel"} />
+            <Navbar />
             <h1>Admin</h1>
             <div>
                 <SearchBar selected={selectedHandler} />

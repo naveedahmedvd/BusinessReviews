@@ -44,8 +44,8 @@ export default function Home(props) {
                 }
                 else if (!data.application) {
                     //redirect
-                    console.log('redirecting to setup');
-                    props.history.push('/setup');
+                    // console.log('redirecting to setup');
+                    // props.history.push('/setup');
                 }
             }
         }

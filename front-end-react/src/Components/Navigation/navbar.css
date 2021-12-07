@@ -1,5 +1,10 @@
 .menuItem{
     padding: 10px;
     font-weight: 900;
-    color:blue !important;;
+    color:blue !important;
+}
+.top-bar{
+    background-color:khaki!important;
+    height: 50px!important;
+    min-height: 500px;
 }
