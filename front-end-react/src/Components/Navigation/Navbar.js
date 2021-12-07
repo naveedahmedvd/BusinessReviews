@@ -25,6 +25,9 @@ export default function Navbar() {
     const history = useHistory();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    const [anchorElUser2, setAnchorElUser2] = React.useState(null);
+
     // const [isAdmin, setIsAdmin] = React.useState(false);
 
 
@@ -49,7 +52,14 @@ export default function Navbar() {
         },
     ]
     const settings2 = [
-        
+        {
+            url: '/signup',
+            title: 'Sign Up'
+        },
+        {
+            url: '/login',
+            title: 'Login'
+        }
     ]
     const navigateTo = (url) => {
         history.push(url);
@@ -67,17 +77,8 @@ export default function Navbar() {
             title: 'Restaurants'
         },
     ];
-    if (!jwt) {
-        menuItems.push({
-            url: '/signup',
-            title: 'Sign Up'
-        });
-        menuItems.push({
-            url: '/login',
-            title: 'Login'
-        });
-    }
-    else {
+
+    if (jwt) {
         IS_LOGGED_IN = true;
         const tmp = localStorage.getItem('userData');
         const userData = JSON.parse(tmp ? tmp : {});
@@ -106,6 +107,17 @@ export default function Navbar() {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    ////
+
+    const handleOpenUserMenu2 = (event) => {
+        setAnchorElUser2(event.currentTarget);
+    };
+
+
+    const handleCloseUserMenu2 = () => {
+        setAnchorElUser2(null);
     };
 
     return (
@@ -185,7 +197,7 @@ export default function Navbar() {
                         </Tooltip>
                         <Menu
                             sx={{ mt: '45px' }}
-                            id="menu-appbar"
+                            id="menu-appbar2"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
                                 vertical: 'top',
@@ -206,6 +218,36 @@ export default function Navbar() {
                             ))}
                         </Menu>
                     </Box>
+                    <Box sx={{ flexGrow: 0 }} hidden={IS_LOGGED_IN}>
+                        <Tooltip title="Open settings">
+                            <IconButton onClick={handleOpenUserMenu2} sx={{ p: 0 }}>
+                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="menu-appbar2"
+                            anchorEl={anchorElUser2}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser2)}
+                            onClose={handleCloseUserMenu2}
+                        >
+                            {settings2.map((setting) => (
+                                <MenuItem key={setting.title} onClick={() => navigateTo(setting.url)}>
+                                    <Typography textAlign="center">{setting.title}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+
                 </Toolbar>
             </Container>
         </AppBar>
