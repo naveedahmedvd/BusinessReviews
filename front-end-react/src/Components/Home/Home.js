@@ -62,8 +62,6 @@ export default function Home(props) {
             <Navbar Title={appName} />
             <h1>Home</h1>
             <SearchBar />
-            <FontAwesomeIcon icon={faSearch} color={"blue"} size={'5x'}/>
-            
         </div>
 
     )

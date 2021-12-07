@@ -121,7 +121,7 @@ export default function SearchBar(props) {
     }
 
     return (
-        <div>
+        <div className='searchbar-container'>
             <Maps mapsLoader={loadAutocompleteUI} />
             <div className="locationField-container">
                 <div className="locationField" style={{ width: "700px" }}>
