@@ -83,7 +83,7 @@ export default function AdminHome(props) {
                 images={imageList.map((image, i) => ({ src: image, value: i }))}
                 onPick={onPick}
             />
-            <Button onClick={saveHandle} disabled={!image} variant="contained">Save</Button>
+            <Button className='save-button' onClick={saveHandle} disabled={!image} variant="contained">Save</Button>
         </div>
 
     )
