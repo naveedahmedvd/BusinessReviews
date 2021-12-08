@@ -18,7 +18,7 @@ export default function Restaurant(props) {
     const [refreshed, setRefreshed] = useState(false)
     const [deleted, setDeleted] = useState(false)
 
-    const { restaurant, index } = props;
+    const { restaurant, index, onDelete } = props;
 
     const imgStyle = {
         width: "100px",
@@ -125,11 +125,13 @@ export default function Restaurant(props) {
     }
 
     const deleteRestaurant = (e) => {
-        console.log(`deleting ${restaurant.restaurantName}`);
+        // console.log(`deleting ${restaurant.restaurantName}`);
         removeRestaurant(restaurant.restaurantId).then(x => {
-            console.log(x);
-            if (!x.error)
+            if (!x.error) {
                 setDeleted(true);
+                onDelete(restaurant.restaurantName);
+            }
+
         })
 
     }

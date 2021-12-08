@@ -6,8 +6,11 @@ import Navbar from "../Navigation/Navbar";
 import Restaurant from "./Restaurant";
 
 import { useGetRestaurantsQuery } from "../../Store/apiSlice";
-
+import AlertMessage from "../Shared/AlertMessage";
 export default function Restaurants(props) {
+    const [message, setMessage] = useState('');
+    const [cssClass, setCssClass] = useState('');
+    const [showMessage, setShowMessage] = useState(false);
 
     let list;
     const {
@@ -18,15 +21,21 @@ export default function Restaurants(props) {
         error
     } = useGetRestaurantsQuery();
 
-    if (isSuccess) {
-        console.log(data)
-        list = data.map((x, idx) => <Restaurant key={idx} restaurant={x} index={idx} />)
-
+    const onDelete = (name) => {
+        setMessage(`restaurant deleted - ${name}`);
+        setCssClass('success');
+        setShowMessage(true);
     }
+    
+    if (isSuccess) {
+        list = data.map((x, idx) => <Restaurant key={idx} restaurant={x} index={idx} onDelete={onDelete} />)
+    }
+
 
     return (
         <div>
             <Navbar Title={"App"} />
+            <AlertMessage cssClass={cssClass} message={message} visible={showMessage} />
             <h1>
                 Restaurants
             </h1>
