@@ -1,0 +1,13 @@
+.error{
+    background-color: palevioletred;
+}
+
+.success{
+    background-color: greenyellow;
+}
+.message{
+    padding: 10px;
+    border-radius: 20%;
+    position:absolute;
+    right: 100px;
+}

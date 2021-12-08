@@ -8,6 +8,7 @@ import { apiSlice } from "../../Store/apiSlice";
 import ImagePicker from 'react-image-picker'
 import 'react-image-picker/dist/index.css'
 import './admin.css'
+import AlertMessage from "../Shared/AlertMessage";
 
 export default function AdminHome(props) {
 
@@ -15,6 +16,11 @@ export default function AdminHome(props) {
     const [image, setImage] = useState('');
     const [imageList, setimageList] = useState([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+
+    const [message, setMessage] = useState('');
+    const [cssClass, setCssClass] = useState('');
+    const [showMessage, setShowMessage] = useState(false);
+
     const onPick = (_image) => {
         setImage(_image);
     }
@@ -26,11 +32,14 @@ export default function AdminHome(props) {
         const restaurant = { ...selectedRestaurant };
 
         restaurant.iconUrl = image.src
-        addRestaurant(selectedRestaurant).then(x => {
+        addRestaurant(restaurant).then(x => {
             if (!x.error) {
                 console.log('restaurant added', x);
-                alert('restaurant added');
+                setMessage('restaurant added');
+                setCssClass('success');
+                setShowMessage(true);
                 window.location.reload();
+                // setTimeout(() => { window.location.reload(); }, 6000);
             }
             else {
                 alert('something went wrong');
@@ -62,7 +71,10 @@ export default function AdminHome(props) {
     return (
         <div>
             <Navbar />
+            <AlertMessage cssClass={cssClass} message={message} visible={showMessage} />
+            {/* <AlertMessage cssClass={'error'} message={'restaurant added successfully'} visible={true} /> */}
             <h1>Admin</h1>
+
             <div>
                 <SearchBar selected={selectedHandler} />
             </div>

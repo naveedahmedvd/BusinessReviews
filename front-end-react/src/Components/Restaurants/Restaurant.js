@@ -56,7 +56,7 @@ export default function Restaurant(props) {
                 iconMaskUrl: placeDetails.icon_mask_base_uri,
                 priceLevel: placeDetails.price_level,
                 rating: placeDetails.rating,
-                reviews: placeDetails.reviews,
+                reviews: placeDetails.reviews ? placeDetails.reviews : [],
                 types: placeDetails.types.reduce((a, b) => a + ' ' + b, '').trim(),
                 googleUrl: placeDetails.url,
                 userRatingsCount: placeDetails.user_ratings_total,
@@ -138,7 +138,7 @@ export default function Restaurant(props) {
             <Maps mapsLoader={() => { refreshDataFromGoogle(restaurant.placeId); }} />
             <FontAwesomeIcon className='trash-icon' icon={faTrash} color={"red"} size={'1x'} onClick={deleteRestaurant} />
             <div className="title-box" onClick={clickHandle}>
-                <img src={restaurant.iconUrl} />
+                <img src={restaurant.iconUrl} className='icon-image' />
 
                 <div>
                     <h2 className="rest-title">
