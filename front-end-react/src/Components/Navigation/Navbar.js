@@ -76,6 +76,10 @@ export default function Navbar() {
             url: '/Restaurants',
             title: 'Restaurants'
         },
+        {
+            url: '/search',
+            title: 'Search'
+        },
     ];
 
     if (jwt) {
@@ -188,7 +192,6 @@ export default function Navbar() {
                             </Button>
                         ))}
                     </Box>
-
                     <Box sx={{ flexGrow: 0 }} hidden={!IS_LOGGED_IN}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

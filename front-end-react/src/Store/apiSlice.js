@@ -84,7 +84,20 @@ export const apiSlice = createApi({
             query: (id) => `/restaurants/${id}`
         }),
         getRestaurants: builder.query({
-            query: () => `/restaurants`
+            query: (param) => {
+                let url = `/restaurants?page=${param.page}`;
+                if (param.name) url = url + `&name=${param.name}`;
+                if (param.priceLevels && param.priceLevels.length > 0) {
+                    param.priceLevels.map(x => url = url + `&priceLevel=${x}`);
+                }
+                if (param.ratings && param.ratings.length > 0) {
+                    param.ratings.map(x => url = url + `&ratings=${x}`);
+                }
+                if (param.timings && param.timings.length > 0) {
+                    param.timings.map(x => url = url + `&timings=${x}`);
+                }
+                return url;
+            }
         }),
     })
 })
@@ -100,5 +113,6 @@ export const {
     useRemoveRestaurantMutation,
     useGetRestaurantsQuery,
     useGetRestaurantQuery,
+    useGetFilteredRestaurantsQuery,
 }
     = apiSlice

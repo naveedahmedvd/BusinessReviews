@@ -1,4 +1,5 @@
 ﻿using BackendCMS.BLL;
+using BackendCMS.Models.DTOs;
 using BackendCMS.Models.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +27,11 @@ namespace BackendCMS.API.Controllers
         // GET: api/<RestaurantsController>
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] int page, [FromQuery] string name, [FromQuery] int[] priceLevel, [FromQuery] string[] ratings, [FromQuery] string[] timings)
         {
             try
             {
-                return Ok(restaurantService.Get());
+                return Ok(restaurantService.Get(page, name, priceLevel, ratings, timings));
             }
             catch (Exception ex)
             {

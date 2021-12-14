@@ -2,12 +2,11 @@
 using BackendCMS.DAL.Models;
 using BackendCMS.DAL.Repository;
 using BackendCMS.Models.AuthModels;
+using BackendCMS.Models.DTOs;
 using BackendCMS.Models.Models.Restaurant;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BackendCMS.BLL
 {
@@ -38,9 +37,34 @@ namespace BackendCMS.BLL
             this.userRepository = userRepository;
         }
 
-        public IEnumerable<Restaurant> Get()
+        public IEnumerable<Restaurant> Get(int page, string name,int[] priceLevel, string[] ratings, string[] timings)
         {
-            return restaurantRepository.GetAll("Reviews,Photos,Timings");
+            var restuarants = restaurantRepository.GetAll("Reviews,Photos,Timings");
+            var ratingTuples = ratings.Select(x =>
+            {
+                var str = x.Replace(" ", String.Empty);
+                var items = str.Split('-');
+                (double from, double to) result = (Convert.ToDouble(items[0]), Convert.ToDouble(items[1]));
+                return result;
+            });
+            //var timingTuples = timings.Select(x =>
+            //{
+            //   // var str = x.Replace(" ", String.Empty);
+            //    var items = x.Split('-');
+            //    var fromHour = DateTime.Parse(items[0].Trim()).ToString("HH");
+            //    var toHour = DateTime.Parse(items[1].Trim()).ToString("HH");
+            //    (int from, int to) result = (Convert.ToInt16(fromHour), Convert.ToInt32(toHour));
+            //    return result;
+            //});
+            var result = restuarants
+                  .Where(x => (name == null || name == string.Empty 
+                        || x.RestaurantName.Contains(name)) && 
+                        (priceLevel.Length == 0 || priceLevel.Contains(x.PriceLevel)) &&
+                        (ratingTuples.Count() == 0 || ratingTuples.Any(rt => x.Rating >= rt.from && x.Rating <= rt.to)))
+                  .Skip((page - 1) * 10)
+                  .Take(page * 10)
+                  .OrderByDescending(x => x.Rating);
+            return result;
         }
 
         public Restaurant Get(int id)

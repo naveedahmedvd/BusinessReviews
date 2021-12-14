@@ -24,6 +24,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import SearchRestaurant from './Components/Restaurants/SearchRestaurant';
 
 function App() {
   return (
@@ -35,11 +36,12 @@ function App() {
       <Router>
         <div>
           <Switch>
-          <Route path="/signup" component={SignUp}></Route>
+            <Route path="/signup" component={SignUp}></Route>
             <Route path="/login" component={Login}></Route>
             <Route path="/setup" component={Setup}></Route>
             <Route path="/Admin" component={AdminHome}></Route>
             <Route path="/restaurants" component={Restaurants}></Route>
+            <Route path="/search" component={SearchRestaurant}></Route>
             <Route path="/restaurant/:id" component={RestaurantDetails}></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
