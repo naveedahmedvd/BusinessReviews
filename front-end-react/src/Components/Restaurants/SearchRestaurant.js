@@ -1,8 +1,9 @@
 import { ToggleButtonGroup, ToggleButton, CircularProgress, Card, CardContent, CardHeader, CardMedia, Checkbox, Divider, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Pagination, Rating, TextField, Typography, Paper, Container } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useGetRestaurantsQuery } from "../../Store/apiSlice";
 import Navbar from "../Navigation/Navbar";
+import _debounce from 'lodash/debounce';
 
 // var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const ratings = ['1.0 - 1.9', '2.0 - 2.9', '3.0 - 3.9', '4.0 - 5.0'];
@@ -12,12 +13,14 @@ const SearchRestaurant = () => {
 
     const [pageNo, setPageNo] = useState(1);
     const [searchRestuarantByName, setSearchRestuarantByName] = useState('');
+    const [searchRestuarant, setSearchRestuarant] = useState('');
     const [priceLevels, setPriceLevels] = useState([]);
     const [ratingsFilter, setRatingsFilter] = useState([]);
     // const [timingsFilter, setTimingsFilter] = useState([]);
     const { data, isSuccess, isLoading } = useGetRestaurantsQuery({ page: pageNo, name: searchRestuarantByName, priceLevels: priceLevels, ratings: ratingsFilter, timings: [] });
     // var today = new Date();
     // var dayName = days[today.getDay()];
+    const debouncefn = useCallback(_debounce((value) => setSearchRestuarantByName(value), 500), []);
 
     const pageChangehandler = (event, value) => {
         setPageNo(value);
@@ -52,7 +55,8 @@ const SearchRestaurant = () => {
     // };
 
     const searchChangeHandler = (event) => {
-        setSearchRestuarantByName(event.target.value);
+        setSearchRestuarant(event.target.value);
+        debouncefn(event.target.value)
     };
 
 
@@ -106,7 +110,7 @@ const SearchRestaurant = () => {
                             variant="filled"
                             sx={{ width: '100%' }}
                             onChange={searchChangeHandler}
-                            value={searchRestuarantByName}
+                            value={searchRestuarant}
                         />
                     </Box>
                 </Grid>
