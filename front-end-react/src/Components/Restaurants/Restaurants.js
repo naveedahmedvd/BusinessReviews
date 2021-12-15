@@ -19,16 +19,16 @@ export default function Restaurants(props) {
         isSuccess,
         isError,
         error
-    } = useGetRestaurantsQuery();
+    } = useGetRestaurantsQuery({ page: 1, name: '', priceLevels: [], ratings: [], timings: [] });
 
     const onDelete = (name) => {
         setMessage(`restaurant deleted - ${name}`);
         setCssClass('success');
         setShowMessage(true);
     }
-    
+
     if (isSuccess) {
-        list = data.map((x, idx) => <Restaurant key={idx} restaurant={x} index={idx} onDelete={onDelete} />)
+        list = data.restaurants.map((x, idx) => <Restaurant key={idx} restaurant={x} index={idx} onDelete={onDelete} />)
     }
 
 
