@@ -37,7 +37,7 @@ namespace BackendCMS.BLL
             this.userRepository = userRepository;
         }
 
-        public IEnumerable<Restaurant> Get(int page, string name,int[] priceLevel, string[] ratings, string[] timings)
+        public GetRestuarantsResponse Get(int page, string name,int[] priceLevel, string[] ratings, string[] timings)
         {
             var restuarants = restaurantRepository.GetAll("Reviews,Photos,Timings");
             var ratingTuples = ratings.Select(x =>
@@ -56,15 +56,21 @@ namespace BackendCMS.BLL
             //    (int from, int to) result = (Convert.ToInt16(fromHour), Convert.ToInt32(toHour));
             //    return result;
             //});
-            var result = restuarants
-                  .Where(x => (name == null || name == string.Empty 
-                        || x.RestaurantName.Contains(name)) && 
+            var filteredResult = restuarants
+                  .Where(x => (name == null || name == string.Empty
+                        || x.RestaurantName.Contains(name)) &&
                         (priceLevel.Length == 0 || priceLevel.Contains(x.PriceLevel)) &&
-                        (ratingTuples.Count() == 0 || ratingTuples.Any(rt => x.Rating >= rt.from && x.Rating <= rt.to)))
+                        (ratingTuples.Count() == 0 || ratingTuples.Any(rt => x.Rating >= rt.from && x.Rating <= rt.to)));
+            var result = filteredResult
                   .Skip((page - 1) * 10)
                   .Take(page * 10)
                   .OrderByDescending(x => x.Rating);
-            return result;
+            var totalRestuarants = filteredResult.Count();
+            return new GetRestuarantsResponse
+            {
+                Restaurants = result,
+                totalRows = totalRestuarants
+            };
         }
 
         public Restaurant Get(int id)

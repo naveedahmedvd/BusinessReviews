@@ -1,23 +1,27 @@
 import { ToggleButtonGroup, ToggleButton, CircularProgress, Card, CardContent, CardHeader, CardMedia, Checkbox, Divider, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Pagination, Rating, TextField, Typography, Paper, Container } from "@mui/material";
-import { Box, typography } from "@mui/system";
+import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useGetRestaurantsQuery } from "../../Store/apiSlice";
 import Navbar from "../Navigation/Navbar";
 
-var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+// var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const ratings = ['1.0 - 1.9', '2.0 - 2.9', '3.0 - 3.9', '4.0 - 5.0'];
-const timings = ['08:00 AM - 11:00 AM', '12:00 PM - 05:00 PM', '06:00 PM - 12:00 AM']
+// const timings = ['08:00 AM - 11:00 AM', '12:00 PM - 05:00 PM', '06:00 PM - 12:00 AM']
 
 const SearchRestaurant = () => {
 
+    const [pageNo, setPageNo] = useState(1);
     const [searchRestuarantByName, setSearchRestuarantByName] = useState('');
     const [priceLevels, setPriceLevels] = useState([]);
     const [ratingsFilter, setRatingsFilter] = useState([]);
-    const [timingsFilter, setTimingsFilter] = useState([]);
-    const { data, isSuccess, isLoading } = useGetRestaurantsQuery({ page: 1, name: searchRestuarantByName, priceLevels: priceLevels, ratings: ratingsFilter, timings: timingsFilter });
+    // const [timingsFilter, setTimingsFilter] = useState([]);
+    const { data, isSuccess, isLoading } = useGetRestaurantsQuery({ page: pageNo, name: searchRestuarantByName, priceLevels: priceLevels, ratings: ratingsFilter, timings: [] });
     // var today = new Date();
     // var dayName = days[today.getDay()];
 
+    const pageChangehandler = (event, value) => {
+        setPageNo(value);
+    };
     const priceLevelToggleHandler = (event, newPriceLevel) => {
         setPriceLevels(newPriceLevel);
     };
@@ -35,17 +39,17 @@ const SearchRestaurant = () => {
         setRatingsFilter(newChecked);
     };
 
-    const timingToggleHandler = (value) => () => {
-        const currentIndex = timingsFilter.indexOf(value);
-        const newChecked = [...timingsFilter];
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
+    // const timingToggleHandler = (value) => () => {
+    //     const currentIndex = timingsFilter.indexOf(value);
+    //     const newChecked = [...timingsFilter];
+    //     if (currentIndex === -1) {
+    //         newChecked.push(value);
+    //     } else {
+    //         newChecked.splice(currentIndex, 1);
+    //     }
 
-        setTimingsFilter(newChecked);
-    };
+    //     setTimingsFilter(newChecked);
+    // };
 
     const searchChangeHandler = (event) => {
         setSearchRestuarantByName(event.target.value);
@@ -53,8 +57,11 @@ const SearchRestaurant = () => {
 
 
     let list = [];
+    let totalPages = 0;
     if (isSuccess) {
-        list = data.map(x => <Card>
+        console.log(data);
+        totalPages = Math.ceil(data.totalRows / 10);
+        list = data.restaurants.map(x => <><Card>
             <CardContent sx={{ width: '800px', height: '250px', display: 'flex' }}>
                 <CardMedia
                     component="img"
@@ -77,7 +84,8 @@ const SearchRestaurant = () => {
                 </Box>
             </CardContent>
             <Divider variant="fullWidth" component="div" />
-        </Card>);
+        </Card>
+        </>);
     }
 
     return (<div>
@@ -185,11 +193,11 @@ const SearchRestaurant = () => {
                 </Grid>
                 <Grid item xs={7}>
                     {list}
-                    <Card>
+                    {totalPages > 0 && <Card>
                         <CardContent>
-                            <Pagination size="large" count={10} color="primary" />
+                            <Pagination size="large" page={pageNo} count={totalPages} onChange={pageChangehandler} color="primary" />
                         </CardContent>
-                    </Card>
+                    </Card>}
                 </Grid>
                 <Grid item xs={1}>
                 </Grid>
