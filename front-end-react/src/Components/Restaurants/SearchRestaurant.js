@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useGetRestaurantsQuery } from "../../Store/apiSlice";
 import Navbar from "../Navigation/Navbar";
 import _debounce from 'lodash/debounce';
+import { useHistory } from "react-router-dom";
 
 // var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const ratings = ['1.0 - 1.9', '2.0 - 2.9', '3.0 - 3.9', '4.0 - 5.0'];
@@ -16,6 +17,7 @@ const SearchRestaurant = () => {
     const [searchRestuarant, setSearchRestuarant] = useState('');
     const [priceLevels, setPriceLevels] = useState([]);
     const [ratingsFilter, setRatingsFilter] = useState([]);
+    const history = useHistory();
     // const [timingsFilter, setTimingsFilter] = useState([]);
     const { data, isSuccess, isLoading } = useGetRestaurantsQuery({ page: pageNo, name: searchRestuarantByName, priceLevels: priceLevels, ratings: ratingsFilter, timings: [] });
     // var today = new Date();
@@ -65,7 +67,9 @@ const SearchRestaurant = () => {
     if (isSuccess) {
         console.log(data);
         totalPages = Math.ceil(data.totalRows / 10);
-        list = data.restaurants.map(x => <><Card>
+        list = data.restaurants.map(x => <><Card onClick={() => {
+            history.push(`/restaurant/${x.restaurantId}`, x);
+        }}>
             <CardContent sx={{ width: '800px', height: '250px', display: 'flex' }}>
                 <CardMedia
                     component="img"

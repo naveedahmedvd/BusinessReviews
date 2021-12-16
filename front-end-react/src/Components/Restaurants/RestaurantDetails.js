@@ -86,7 +86,7 @@ export default function RestaurantDetails(props) {
 
     return (
         <>
-            <FormDialog open={openForm} title={`${restaurant.name} Review`} cancelButtonText='Cancel' submitButtonText='Add' onClose={closeFormDialogHandler} onSubmit={submitFormDialogHandler}>
+            <FormDialog open={openForm} title={`${restaurant.restaurantName}`} cancelButtonText='Cancel' submitButtonText='Add' onClose={closeFormDialogHandler} onSubmit={submitFormDialogHandler}>
                 {error && <Alert style={{ backgroundColor: '#FDEDED' }} onClose={() => {
                     setError(null);
                 }} severity="error">
@@ -174,11 +174,11 @@ export default function RestaurantDetails(props) {
                             <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                                 <CardContent style={{ alignItems: "center", justify: "center" }}>
                                     <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700 }} variant="h2" component="div" color="text.primary">
-                                        {restaurant.name}
+                                        {restaurant.restaurantName}
                                     </Typography>
                                     <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                                         <Rating name="read-only" precision={0.5} value={restaurant.rating} readOnly />
-                                        <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="h3" component="div" color="text.primary">{` ${restaurant.reviews?.length} Reviews`}</Typography>
+                                        <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="h6" component="div" color="text.primary">{` ${restaurant.reviews?.length} Reviews`}</Typography>
                                     </Box>
                                     <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="body2" color="text.secondary">
                                         {restaurant.address}
@@ -238,12 +238,12 @@ export default function RestaurantDetails(props) {
                             <Card>
                                 <List>
                                     <ListItem alignItems="flex-start">
-                                        <ListItemText primary={<Link href="#">{restaurant.WebsiteURL}</Link>} />
+                                        <ListItemText primary={<Link fontSize={12} href="#">{restaurant.website}</Link>} />
                                         <ListItemIcon><LinkIcon></LinkIcon></ListItemIcon>
                                     </ListItem>
                                     <Divider variant="fullWidth" component="li" />
                                     <ListItem alignItems="flex-start">
-                                        <ListItemText primary={restaurant.phoneNumber} />
+                                        <ListItemText primary={restaurant.international_phone} />
                                         <ListItemIcon><PhoneInTalkIcon></PhoneInTalkIcon></ListItemIcon>
                                     </ListItem>
                                     <Divider variant="fullWidth" component="li" />
