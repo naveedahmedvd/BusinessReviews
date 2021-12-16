@@ -76,10 +76,10 @@ export default function Navbar() {
             url: '/Restaurants',
             title: 'Restaurants'
         },
-        {
-            url: '/search',
-            title: 'Search'
-        },
+        // {
+        //     url: '/search',
+        //     title: 'Search'
+        // },
     ];
 
     if (jwt) {

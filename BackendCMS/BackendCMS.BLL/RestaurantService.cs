@@ -58,7 +58,7 @@ namespace BackendCMS.BLL
             //});
             var filteredResult = restuarants
                   .Where(x => (name == null || name == string.Empty
-                        || x.RestaurantName.Contains(name)) &&
+                        || x.RestaurantName.ToLower().Contains(name.ToLower())) &&
                         (priceLevel.Length == 0 || priceLevel.Contains(x.PriceLevel)) &&
                         (ratingTuples.Count() == 0 || ratingTuples.Any(rt => x.Rating >= rt.from && x.Rating <= rt.to)));
             var result = filteredResult
