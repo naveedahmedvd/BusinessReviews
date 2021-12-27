@@ -5,6 +5,9 @@ import { useGetRestaurantsQuery } from "../../Store/apiSlice";
 import Navbar from "../Navigation/Navbar";
 import _debounce from 'lodash/debounce';
 import { useHistory } from "react-router-dom";
+import Restaurant from './Restaurant';
+import AlertMessage from "../Shared/AlertMessage";
+
 
 // var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const ratings = ['1.0 - 1.9', '2.0 - 2.9', '3.0 - 3.9', '4.0 - 5.0'];
@@ -17,6 +20,9 @@ const SearchRestaurant = () => {
     const [searchRestuarant, setSearchRestuarant] = useState('');
     const [priceLevels, setPriceLevels] = useState([]);
     const [ratingsFilter, setRatingsFilter] = useState([]);
+    const [message, setMessage] = useState('');
+    const [cssClass, setCssClass] = useState('');
+    const [showMessage, setShowMessage] = useState(false);
     const history = useHistory();
     // const [timingsFilter, setTimingsFilter] = useState([]);
     const { data, isSuccess, isLoading } = useGetRestaurantsQuery({ page: pageNo, name: searchRestuarantByName, priceLevels: priceLevels, ratings: ratingsFilter, timings: [] });
@@ -60,43 +66,23 @@ const SearchRestaurant = () => {
         setSearchRestuarant(event.target.value);
         debouncefn(event.target.value)
     };
-
+    const onDelete = (name) => {
+        setMessage(`restaurant deleted - ${name}`);
+        setCssClass('success');
+        setShowMessage(true);
+    }
 
     let list = [];
     let totalPages = 0;
     if (isSuccess) {
         console.log(data);
         totalPages = Math.ceil(data.totalRows / 10);
-        list = data.restaurants.map(x => <><Card onClick={() => {
-            history.push(`/restaurant/${x.restaurantId}`, x);
-        }}>
-            <CardContent sx={{ width: '800px', height: '250px', display: 'flex' }}>
-                <CardMedia
-                    component="img"
-                    sx={{ width: 200, height: 200 }}
-                    image={x.iconUrl}
-                />
-                <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                    <CardContent style={{ alignItems: "center", justify: "center" }}>
-                        <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 700 }} variant="h4" component="div" color="text.primary">
-                            {x.restaurantName}
-                        </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                            <Rating name="read-only" precision={0.5} value={x.rating} readOnly />
-                            <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="h6" component="div" color="text.primary">{` ${x.reviews?.length} Reviews`}</Typography>
-                        </Box>
-                        <Typography style={{ fontFamily: 'Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif' }} variant="body2" color="text.secondary">
-                            {x.address}
-                        </Typography>
-                    </CardContent>
-                </Box>
-            </CardContent>
-            <Divider variant="fullWidth" component="div" />
-        </Card>
-        </>);
+        list = data.restaurants.map((x, idx) => <Restaurant key={idx} restaurant={x} index={idx} onDelete={onDelete} />)
+
     }
 
     return (<div>
+        <AlertMessage cssClass={cssClass} message={message} visible={showMessage} />
         <Navbar Title={"App"} />
         <h1>
             Restaurants
@@ -172,43 +158,19 @@ const SearchRestaurant = () => {
                                 )}
                             </List>
                         </Paper>
-                        {/* <Divider variant="fullWidth" component="div" />
-                        <Paper sx={{ maxWidth: 450 }}>
-                            <Typography sx={{ paddingTop: 2, paddingLeft: 2 }} fontWeight={800}>{dayName} timings</Typography>
-                            <List sx={{ width: '100%', maxWidth: 450, bgcolor: 'background.paper' }}>
-                                {timings.map((x, index) =>
-                                    <ListItem
-                                        key={index}
-                                        disablePadding
-                                    >
-                                        <ListItemButton role={undefined} onClick={timingToggleHandler(x)} dense>
-                                            <ListItemIcon>
-                                                <Checkbox
-                                                    edge="start"
-                                                    checked={timingsFilter.indexOf(x) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    inputProps={{ 'aria-labelledby': index }}
-                                                />
-                                            </ListItemIcon>
-                                            <ListItemText id={index} primary={x} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                )}
-                            </List>
-                        </Paper> */}
+                        
                     </Grid>
                 </Grid>
                 <Grid item xs={7}>
                     {list}
+                    {totalPages == 0 && <p>No results found.</p>}
                     {totalPages > 0 && <Card>
                         <CardContent>
                             <Pagination size="large" page={pageNo} count={totalPages} onChange={pageChangehandler} color="primary" />
                         </CardContent>
                     </Card>}
                 </Grid>
-                <Grid item xs={1}>
-                </Grid>
+               
             </Grid>
         }
     </div >)

@@ -11,8 +11,10 @@
 
 .rest-container {
     border : 1px solid gray;
-    padding: 3%;
-    margin : 2%;
+    padding: 0 3% 0 3%;
+    margin : 0%;
+    background-color: whitesmoke;
+    border-radius: 1%;
 }
 
 .trash-icon {

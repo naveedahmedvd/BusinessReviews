@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTrash, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from 'react-router-dom';
 import { apiSlice } from "../../Store/apiSlice";
+import { Rating } from "@mui/material";
 
 export default function Restaurant(props) {
     const [removeRestaurant] = apiSlice.endpoints.removeRestaurant.useMutation();
@@ -148,7 +149,7 @@ export default function Restaurant(props) {
                     </h2>
                     <div>Address: {restaurant.address}</div>
                     <div>Phone: {restaurant.phone}</div>
-                    {ratingIcons}
+                    <Rating name="read-only" precision={0.5} value={restaurant.rating} readOnly />
                 </div>
             </div>
 
